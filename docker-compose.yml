@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: counter-api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/visit-counter
+      - ALLOWED_ORIGINS=https://github.com,http://localhost:3000
+    depends_on:
+      - mongo
+    networks:
+      - counter-network
+
+  mongo:
+    image: mongo:6
+    container_name: counter-mongodb
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - counter-network
+    # Comment out these lines if you don't need authentication
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=admin
+    #   - MONGO_INITDB_ROOT_PASSWORD=password
+
+networks:
+  counter-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
