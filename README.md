@@ -24,16 +24,27 @@ A simple API for counting visits to websites and GitHub repositories.
 ### Docker Setup (Recommended)
 1. Clone this repository
 2. Make sure Docker and Docker Compose are installed on your server
-3. Run the application:
+3. Configure environment variables:
+   ```
+   # Create a .env file or export these variables in your shell
+   API_PORT=3000        # The port exposed on your host machine
+   CONTAINER_PORT=3000  # The port used inside the container
+   ALLOWED_ORIGINS=https://github.com,http://yourwebsite.com,http://192.168.*.*
+   ```
+4. Run the application:
    ```
    docker-compose up -d
    ```
    This will start both the API and MongoDB in containers.
-4. To stop the application:
+5. To use a different port (e.g., port 8080):
+   ```
+   API_PORT=8080 docker-compose up -d
+   ```
+6. To stop the application:
    ```
    docker-compose down
    ```
-5. To view logs:
+7. To view logs:
    ```
    docker-compose logs -f
    ```
@@ -134,7 +145,12 @@ For a shields.io style badge:
 For production deployment:
 
 1. Clone the repository to your server
-2. Update the ALLOWED_ORIGINS in docker-compose.yml to include your domain(s)
-3. If needed, configure MongoDB authentication by uncommenting the environment variables
-4. If you want to use HTTPS, you'll need to set up a reverse proxy like Nginx in front of this application
-5. Run docker-compose up -d to start the service
+2. Configure the ports and environment variables in the `.env` file:
+   ```
+   API_PORT=80          # Use port 80 for HTTP (or 443 for HTTPS)
+   CONTAINER_PORT=3000  # Keep the internal port as 3000
+   ALLOWED_ORIGINS=https://yourdomain.com,https://github.com
+   ```
+3. If needed, configure MongoDB authentication by uncommenting the environment variables in docker-compose.yml
+4. For HTTPS, it's recommended to use a reverse proxy like Nginx in front of this application
+5. Run `docker-compose up -d` to start the service

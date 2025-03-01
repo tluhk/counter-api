@@ -8,6 +8,9 @@ RUN npm install --production
 
 COPY . .
 
-EXPOSE 3000
+# The port can be overridden at runtime
+ENV PORT=3000
 
-CMD ["node", "src/index.js"]
+EXPOSE $PORT
+
+CMD ["sh", "-c", "node src/index.js"]

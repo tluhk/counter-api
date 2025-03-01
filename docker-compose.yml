@@ -1,14 +1,16 @@
+version: '3.8'
+
 services:
   app:
     build: .
     container_name: counter-api
     restart: always
     ports:
-      - "3000:3000"
+      - "${API_PORT:-3000}:${CONTAINER_PORT:-3000}"
     environment:
-      - PORT=3000
+      - PORT=${CONTAINER_PORT:-3000}
       - MONGODB_URI=mongodb://mongo:27017/visit-counter
-      - ALLOWED_ORIGINS=https://github.com,http://localhost,http://192.168.*.*,http://10.*.*.*,http://172.16.*.*,http://172.31.*.*
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://github.com,http://localhost,http://192.168.*.*,http://10.*.*.*,http://172.16.*.*,http://172.31.*.*}
     depends_on:
       - mongo
     networks:
