@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   app:
     build: .
@@ -8,7 +10,7 @@ services:
     environment:
       - PORT=3000
       - MONGODB_URI=mongodb://mongo:27017/visit-counter
-      - ALLOWED_ORIGINS=https://github.com,http://localhost:3000
+      - ALLOWED_ORIGINS=https://github.com,http://localhost:3000,http://localhost,http://192.168.*.*,http://10.*.*.*,http://172.16.*.*,http://172.31.*.*
     depends_on:
       - mongo
     networks:

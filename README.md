@@ -14,7 +14,7 @@ A simple API for counting visits to websites and GitHub repositories.
    ```
    PORT=3000
    MONGODB_URI=mongodb://localhost:27017/visit-counter
-   ALLOWED_ORIGINS=https://github.com,http://yourwebsite.com
+   ALLOWED_ORIGINS=https://github.com,http://yourwebsite.com,http://localhost:3000,http://192.168.*.*
    ```
 4. Start the server:
    ```
@@ -37,6 +37,20 @@ A simple API for counting visits to websites and GitHub repositories.
    ```
    docker-compose logs -f
    ```
+
+## CORS Configuration
+
+This API supports wildcards in the ALLOWED_ORIGINS environment variable to allow access from local networks:
+
+```
+ALLOWED_ORIGINS=https://github.com,http://localhost:3000,http://192.168.*.*,http://10.*.*.*
+```
+
+Common local network patterns:
+- `http://localhost:*` - All localhost ports
+- `http://192.168.*.*` - Home/small office networks
+- `http://10.*.*.*` - Private networks
+- `http://172.16.*.*-http://172.31.*.*` - Private networks
 
 ## API Endpoints
 
@@ -76,6 +90,20 @@ Add this script to your HTML page:
 <p>Visitor count: <span id="visitor-count">0</span></p>
 ```
 
+### For Local Network Usage
+
+If you're using this on a local network, use your server's IP address:
+
+```html
+<script>
+  fetch('http://192.168.1.100:3000/api/counter/hit/local-app')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('visitor-count').textContent = data.count;
+    });
+</script>
+```
+
 ### For GitHub Repositories
 
 Add this to your GitHub README.md:
@@ -105,5 +133,3 @@ For production deployment:
 3. If needed, configure MongoDB authentication by uncommenting the environment variables
 4. If you want to use HTTPS, you'll need to set up a reverse proxy like Nginx in front of this application
 5. Run docker-compose up -d to start the service
-
-![Visitors](http://localhost:3000/api/badge/counter)
