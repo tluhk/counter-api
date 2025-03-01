@@ -59,6 +59,11 @@ Common local network patterns:
 - `GET /api/badge/:key` - Get SVG badge with visit count (increments the counter)
 - `GET /api/badge/view/:key` - Get SVG badge without incrementing the counter
 
+### Health Check Endpoints
+
+- `GET /health` - Detailed health status with MongoDB connection state and system metrics
+- `GET /ping` - Simple health check that returns "pong" (useful for load balancers)
+
 ## Badge Customization
 
 You can customize the badge appearance with query parameters:
