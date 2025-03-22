@@ -4,9 +4,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const counterRoutes = require('./routes/counter');
 const badgeRoutes = require('./routes/badge');
+const logger = require('./middleware/logger');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Apply the logger middleware to log all requests
+app.use(logger);
 
 // Create a more flexible CORS configuration for local networks
 const corsOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['*'];
@@ -14,19 +18,19 @@ const corsOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.sp
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, curl requests)
     if (!origin) return callback(null, true);
-    
+
     // Check if the origin is allowed
     // First check exact matches
     if (corsOrigins.includes(origin)) {
       return callback(null, true);
     }
-    
+
     // Then check wildcard patterns (for local networks)
     const wildcardPatterns = corsOrigins.filter(pattern => pattern.includes('*'));
-    
+
     for (const pattern of wildcardPatterns) {
       const regexPattern = pattern.replace(/\./g, '\\.').replace(/\*/g, '.*');
       const regex = new RegExp(`^${regexPattern}$`);
@@ -34,7 +38,7 @@ app.use(cors({
         return callback(null, true);
       }
     }
-    
+
     callback(new Error(`Origin ${origin} not allowed by CORS policy`));
   },
   methods: ['GET'],
@@ -50,11 +54,11 @@ app.get('/health', async (req, res) => {
   try {
     // Check MongoDB connection
     const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
-    
+
     // Basic system info
     const uptime = process.uptime();
     const memoryUsage = process.memoryUsage();
-    
+
     res.status(200).json({
       status: 'OK',
       uptime: `${Math.floor(uptime / 60)} minutes, ${Math.floor(uptime % 60)} seconds`,
