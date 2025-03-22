@@ -63,6 +63,6 @@ spec:
   selector:
     app: counter-api
   ports:
-    - port: 80
+    - port: 3333 # Change this from 80 to 3333
       targetPort: 8080
   type: ClusterIP
