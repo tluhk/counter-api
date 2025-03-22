@@ -14,6 +14,8 @@ spec:
       labels:
         app: counter-api
     spec:
+      imagePullSecrets:
+        - name: github-registry-secret
       containers:
         - name: counter-api
           image: ghcr.io/tluhk/counter-api:latest
