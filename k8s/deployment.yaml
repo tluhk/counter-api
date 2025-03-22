@@ -39,6 +39,9 @@ spec:
               value: "verbose"
             - name: NODE_PATH
               value: "/app"
+            # Add MongoDB connection environment variables
+            - name: MONGODB_URI
+              value: "mongodb://mongodb:27017/counter"
           livenessProbe:
             httpGet:
               path: /health
