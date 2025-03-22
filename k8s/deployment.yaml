@@ -37,6 +37,8 @@ spec:
               value: "production"
             - name: NPM_CONFIG_LOGLEVEL
               value: "verbose"
+            - name: NODE_PATH
+              value: "/app"
           livenessProbe:
             httpGet:
               path: /health

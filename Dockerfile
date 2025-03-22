@@ -1,20 +1,18 @@
-FROM node:16-alpine
+FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package files first for better layer caching
-COPY package.json ./
-# If package-lock.json exists, copy it too (preferred)
-COPY package-lock.json* ./
+# Copy package.json and package-lock.json files
+COPY package*.json ./
 
-# Use npm install with --omit=dev instead of npm ci
-RUN npm install --omit=dev
+# Install dependencies
+RUN npm ci --only=production
 
-# Copy the rest of the application
+# Copy application code
 COPY . .
 
 # Expose the port the app runs on
 EXPOSE 8080
 
 # Command to run the application
-CMD ["node", "index.js"]
+CMD ["node", "src/index.js"]
