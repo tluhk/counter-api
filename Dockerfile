@@ -4,13 +4,10 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --production
+RUN npm ci --only=production
 
 COPY . .
 
-# The port can be overridden at runtime
-ENV PORT=3000
+EXPOSE 8080
 
-EXPOSE $PORT
-
-CMD ["sh", "-c", "node src/index.js"]
+CMD ["node", "index.js"]
