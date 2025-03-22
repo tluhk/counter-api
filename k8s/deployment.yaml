@@ -18,7 +18,8 @@ spec:
         - name: github-registry-secret
       containers:
         - name: counter-api
-          image: ghcr.io/tluhk/counter-api:latest
+          # For Raspberry Pi, use ARM-compatible image
+          image: ghcr.io/tluhk/counter-api:arm
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
